@@ -1,0 +1,42 @@
+import os
+import telebot
+from telebot.types import ChatJoinRequest
+
+TOKEN = os.environ.get("BOT_TOKEN")
+if not TOKEN:
+    raise RuntimeError("BOT_TOKEN non impostato")
+
+bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
+
+WELCOME_TEXT = (
+"⚽️BENVENUTO NEL CANALE PUBBLICO del CECCHINO 🎾🏆🔫\n\n"
+"Qui troverai tutte le promo più vantaggiose e consigli su come sfruttarle 👌\n\n"
+"✅ Non aspettarti multiploni quota 100 che si vincono 2 volte all’anno, qui giochiamo precisi come cecchini per andare in profit tutti i giorni ✅\n\n"
+"🏆 Inoltre per te che sei appena entrato nel mio canale pubblico posso iniziare a farti prendere un bonus di 5️⃣ 🔤 💸 SENZA DEPOSITO(selezionando solo il bonus all’iscrizione)\n"
+"al nostro book di riferimento, tramite questo link 👇\n\n"
+"➡️ 50 EURO GRATIS 💸💸💸\n\n"
+"Se vuoi invece accedere a tutte le nostre giocate prima che le quote scendono 📉, alle nostre analisi, alle nostre scalate periodiche e a tutti i dati e statistiche, contatta la mia assistenza che la SNIPER ROOM (canale privato) è ancora aperta ! 👇"
+)
+
+@bot.chat_join_request_handler()
+def handle_join_request(join_request: ChatJoinRequest):
+    
+    try:
+        # DM al nuovo utente
+        if getattr(join_request, "user_chat_id", None):
+            bot.send_message(join_request.user_chat_id, WELCOME_TEXT)
+    except Exception as e:
+        print("Errore DM:", e)
+
+    try:
+        # Approva la richiesta
+        bot.approve_chat_join_request(
+            join_request.chat.id,
+            join_request.from_user.id
+        )
+    except Exception as e:
+        print("Errore approvazione:", e)
+
+
+print("Bot del Cecchino ONLINE...")
+bot.infinity_polling(allowed_updates=["chat_join_request"])
