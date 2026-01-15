@@ -1,14 +1,17 @@
 import os
 import telebot
 from telebot.types import ChatJoinRequest
-from telebot.apihelper import ApiTelegramException
 
-TOKEN = os.getenv("BOT_TOKEN")
+# Railway: a volte il token è salvato come BOT, altre volte come BOT_TOKEN
+TOKEN = os.getenv("BOT_TOKEN") or os.getenv("BOT")
 if not TOKEN:
-    raise RuntimeError("BOT_TOKEN non impostato! (Railway > Variables > BOT_TOKEN)")
+    raise RuntimeError("BOT_TOKEN/BOT non impostato! (Railway > Variables)")
 
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 
+# -------------------------------
+# MESSAGGIO DI BENVENUTO COMPLETO
+# -------------------------------
 WELCOME_TEXT = """
 <b><u><i>BENVENUTO NEL NOSTRO CANALE<br>PUBBLICO 🏆</i></u></b>
 
@@ -29,7 +32,10 @@ WELCOME_TEXT = """
 <i>Ora è arrivato il momento di fare sul serio, io ti do la mira, ma il grilletto lo devi premere tu! Benvenuto 👌</i>
 """
 
-@bot.message_handler(commands=["start"])
+# -------------------------------
+# /start (solo per test)
+# -------------------------------
+@bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(
         message.chat.id,
@@ -37,34 +43,36 @@ def start(message):
         "Per ricevere il messaggio automatico, invia una richiesta di accesso al canale."
     )
 
+# --------------------------------------------------------
+# APPROVAZIONE AUTOMATICA + INVIO MESSAGGIO PRIVATO
+# --------------------------------------------------------
 @bot.chat_join_request_handler()
 def handle_join_request(join_request: ChatJoinRequest):
-    chat_id = join_request.chat.id
-    user_id = join_request.from_user.id
-    user_chat_id = getattr(join_request, "user_chat_id", None)
 
-    print(f"📩 Join request ricevuta: chat_id={chat_id} user_id={user_id} user_chat_id={user_chat_id}")
-
-    # 1) Approva richiesta
+    # 1) APPROVA LA RICHIESTA AUTOMATICAMENTE
     try:
-        bot.approve_chat_join_request(chat_id, user_id)
-        print(f"✅ Approvata richiesta per user {user_id}")
-    except ApiTelegramException as e:
-        print(f"❌ Errore approvazione: {e.error_code} - {e.description}")
-        return
+        bot.approve_chat_join_request(
+            join_request.chat.id,
+            join_request.from_user.id
+        )
+        print(f"✅ Approvata richiesta per user {join_request.from_user.id}")
     except Exception as e:
-        print("❌ Errore approvazione:", repr(e))
-        return
+        print("❌ Errore approvazione:", e)
 
-    # 2) Invia DM (prima user_chat_id, poi fallback su user_id)
+    # 2) INVIA IL MESSAGGIO PRIVATO (stessa tua logica)
     try:
-        target = user_chat_id if user_chat_id else user_id
-        bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
-        print(f"✅ Messaggio inviato in privato a {target}")
-    except ApiTelegramException as e:
-        print(f"❌ Errore invio DM: {e.error_code} - {e.description}")
+        # Telegram fornisce user_chat_id solo se l'utente può ricevere DM
+        if getattr(join_request, "user_chat_id", None):
+            bot.send_message(
+                join_request.user_chat_id,
+                WELCOME_TEXT,
+                disable_web_page_preview=True
+            )
+            print(f"✅ Messaggio inviato a {join_request.user_chat_id}")
+        else:
+            print("⚠️ user_chat_id assente: impossibile inviare DM (privacy / limiti Telegram)")
     except Exception as e:
-        print("❌ Errore invio DM:", repr(e))
+        print("❌ Errore invio DM:", e)
 
 print("Bot del Cecchino ONLINE con approvazione automatica…")
-bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)
+bot.infinity_polling(allowed_updates=["chat_join_request", "message"])
