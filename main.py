@@ -10,26 +10,26 @@ bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 
 # -------------------------------
 # MESSAGGIO DI BENVENUTO COMPLETO
+# (corsivo + sottolineato dove serve)
 # -------------------------------
 WELCOME_TEXT = """
-<b>⚽️BENVENUTO NEL CANALE PUBBLICO del CECCHINO 🎾🏆🔫</b>
+<b><u><i>BENVENUTO NEL NOSTRO CANALE<br>PUBBLICO 🏆</i></u></b>
 
-Qui troverai tutte le promo più vantaggiose e consigli su come sfruttarle 👌
+<i>Qui troverai solo ed esclusivamente giocate studiate per pungere i bookmakers 🔫</i>
 
-✅ Non aspettarti multiploni quota 100 che si vincono 2 volte all’anno, 
-qui giochiamo precisi come cecchini per andare in profit tutti i giorni.
+<i><b>In questo canale troverai :</b></i>
 
-🏆 Inoltre, per te che sei appena entrato nel mio canale pubblico, 
-posso farti prendere un BONUS SENZA DEPOSITO 💸 selezionando solo il bonus 
-all’iscrizione tramite questo link 👇
+<b><i>- QUOTE MAGGIORATE OGNI GIORNO</i></b> 🔝<br>
+<b><i>- BONUS SNIPER WEEK</i></b> <i>(che ci permette di giocare le multiple gratis ogni week end del mese per tutto l’anno)</i> 💰<br>
+<b><i>- ANALISI SU MARCATORI E RISULTATI ESATTI</i></b> <i>(ci sono 2/3 studi settimanali)</i> 📈<br>
+<b><i>- RICEVERAI 50,00€ GRATIS SOLO ALL’ISCRIZIONE E ALLA CONVALIDA DEI DOCUMENTI</i></b> <i>(selezionando il bonus all’iscrizione)</i> 🎁
 
-➡️ <b><a href="https://bonus.sportbet.it/ilcecchino/">50 EURO GRATIS 💸💸💸</a></b>
+<u><i>Per avere tutto ciò, ti basta un’iscrizione ad uno dei nostri book di riferimento, che ci permettono di avere questi bonus e noi li sfruttiamo al meglio. (Ricordati, è proprio con i bonus che abbiamo un vantaggio su tutto)</i></u>
 
-Se vuoi invece accedere a tutte le nostre giocate prima che le quote scendono 📉, 
-alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza 
-che la SNIPER ROOM (canale privato) è ancora aperta! 👇
+<b>SPORTBET :</b> <a href="https://bonus.sportbet.it/ilcecchino/">https://bonus.sportbet.it/ilcecchino/</a><br>
+<b>SPORTIUM :</b> <a href="https://sportium.it/fwlink/account-registration?father=spcecchino">https://sportium.it/fwlink/account-registration?father=spcecchino</a>
 
-⚠️ <b><a href="https://t.me/m/36n3dfU3MmNk">ASSISTENZA</a></b>
+<i>Ora è arrivato il momento di fare sul serio, io ti do la mira, ma il grilletto lo devi premere tu! Benvenuto 👌</i>
 """
 
 # -------------------------------
