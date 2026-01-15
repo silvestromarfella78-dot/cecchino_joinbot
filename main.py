@@ -3,7 +3,6 @@ import telebot
 from telebot.types import ChatJoinRequest
 from telebot.apihelper import ApiTelegramException
 
-# Railway: a volte la variabile è BOT, altre BOT_TOKEN
 TOKEN = os.getenv("BOT_TOKEN") or os.getenv("BOT")
 if not TOKEN:
     raise RuntimeError("BOT_TOKEN/BOT non impostato! (Railway > Variables)")
@@ -18,28 +17,35 @@ except Exception:
 
 # -------------------------------
 # MESSAGGIO DI BENVENUTO COMPLETO
-# NB: NIENTE <br> -> Telegram HTML non lo supporta qui
+# NB: NIENTE <br> -> usa solo \n
 # -------------------------------
 WELCOME_TEXT = """
-<b><u><i>BENVENUTO NEL NOSTRO CANALE
-PUBBLICO 🏆</i></u></b>
+<b>BENVENUTO NEL NOSTRO CANALE PUBBLICO 🏆</b>
 
-<i>Qui troverai solo ed esclusivamente giocate studiate per pungere i bookmakers 🔫</i>
+Qui troverai solo ed esclusivamente giocate studiate per pungere i bookmakers 🔫
 
-<i><b>In questo canale troverai :</b></i>
+<b>In questo canale troverai :</b>
 
-<b><i>- QUOTE MAGGIORATE OGNI GIORNO</i></b> 🔝
-<b><i>- BONUS SNIPER WEEK</i></b> <i>(che ci permette di giocare le multiple gratis ogni week end del mese per tutto l’anno)</i> 💰
-<b><i>- ANALISI SU MARCATORI E RISULTATI ESATTI</i></b> <i>(ci sono 2/3 studi settimanali)</i> 📈
-<b><i>- RICEVERAI 50,00€ GRATIS SOLO ALL’ISCRIZIONE E ALLA CONVALIDA DEI DOCUMENTI</i></b> <i>(selezionando il bonus all’iscrizione)</i> 🎁
+- <b>QUOTE MAGGIORATE OGNI GIORNO</b> 🔝
 
-<u><i>Per avere tutto ciò, ti basta un iscrizione ad uno dei nostri book di riferimento, che ci permettono di avere questi bonus e noi li sfruttiamo a meglio.
-(Ricordati, è proprio con i bonus che abbiamo un vantaggio su tutto)</i></u>
+- <b>BONUS SNIPER WEEK</b> (che ci permette di giocare le multiple gratis ogni week end del mese per tutto l’anno) 💰
+
+- <b>ANALISI SU MARCATORI E RISULTATI ESATTI</b> (ci sono 2/3 studi settimanali) 📈
+
+- <b>RICEVERAI 50,00€ GRATIS</b> SOLO ALL’ISCRIZIONE E ALLA CONVALIDA DEI DOCUMENTI (selezionando il bonus all’iscrizione) 🎁
+
+Per avere tutto ciò, ti basta un iscrizione ad uno dei nostri book di riferimento, che ci permettono di avere questi bonus e noi li sfruttiamo a meglio.
+(Ricordati, è proprio con i bonus che abbiamo un vantaggio su tutto)
 
 <b>SPORTBET :</b> <a href="https://bonus.sportbet.it/ilcecchino/">https://bonus.sportbet.it/ilcecchino/</a>
+
 <b>SPORTIUM :</b> <a href="https://sportium.it/fwlink/account-registration?father=spcecchino">https://sportium.it/fwlink/account-registration?father=spcecchino</a>
 
-<i>Ora è arrivato il momento di fare sul serio, io ti do la mira, ma il grilletto lo devi premere tu! Benvenuto 👌</i>
+<b>Ora è arrivato il momento di fare sul serio, io ti do la mira, ma il grilletto lo devi premere tu! Benvenuto 👌</b>
+
+Se invece vuoi accedere <b>A TUTTE LE ANALISI ESCLUSIVE</b> contatta l’assistenza che ti spiega come accedere al canale privato 👇
+
+👉 <b><a href="https://t.me/m/36n3dfU3MmNk">ASSISTENZA</a></b> 👈
 """
 
 # -------------------------------
