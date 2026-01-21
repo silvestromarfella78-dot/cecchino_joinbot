@@ -3,6 +3,7 @@ import telebot
 from telebot.types import ChatJoinRequest
 from telebot.apihelper import ApiTelegramException
 
+# Railway: a volte la variabile è BOT, altre BOT_TOKEN
 TOKEN = os.getenv("BOT_TOKEN") or os.getenv("BOT")
 if not TOKEN:
     raise RuntimeError("BOT_TOKEN/BOT non impostato! (Railway > Variables)")
@@ -14,6 +15,9 @@ try:
     bot.remove_webhook()
 except Exception:
     pass
+
+# ✅ 1) METTI QUI IL FILE_ID DELLA FOTO (dopo che lo estrai)
+PHOTO_FILE_ID = ""  # es: "AgACAgQAAxkBAAIB...."
 
 # -------------------------------
 # MESSAGGIO DI BENVENUTO COMPLETO
@@ -48,8 +52,19 @@ def start(message):
     bot.send_message(
         message.chat.id,
         "🔫 Bot del Cecchino attivo.\n\n"
-        "Per ricevere il messaggio automatico, invia una richiesta di accesso al canale."
+        "Per ricevere il messaggio automatico, invia una richiesta di accesso al canale.\n\n"
+        "Per ottenere il FILE_ID della foto: inviami una foto qui in chat e te lo rimando."
     )
+
+# --------------------------------------------------------
+# ✅ 2) QUESTO SERVE SOLO PER ESTRARRE IL FILE_ID DELLA FOTO
+# Invia una foto al bot in privato e lui ti risponde con il FILE_ID.
+# (Dopo che l'hai copiato in PHOTO_FILE_ID puoi anche cancellare questa funzione)
+# --------------------------------------------------------
+@bot.message_handler(content_types=['photo'])
+def get_photo_id(message):
+    file_id = message.photo[-1].file_id  # versione più grande
+    bot.reply_to(message, f"FILE_ID:\n<code>{file_id}</code>")
 
 # --------------------------------------------------------
 # APPROVAZIONE AUTOMATICA + INVIO MESSAGGIO PRIVATO
@@ -81,7 +96,14 @@ def handle_join_request(join_request: ChatJoinRequest):
 
     for target in targets:
         try:
-            bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
+            # ✅ Se hai messo PHOTO_FILE_ID, invia foto + messaggio
+            if PHOTO_FILE_ID:
+                bot.send_photo(target, PHOTO_FILE_ID)
+                bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
+            else:
+                # Se non hai ancora il file_id, invia solo testo
+                bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
+
             print(f"✅ DM INVIATO A {target}")
             break
         except ApiTelegramException as e:
