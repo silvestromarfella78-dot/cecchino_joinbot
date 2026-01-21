@@ -17,35 +17,27 @@ except Exception:
 
 # -------------------------------
 # MESSAGGIO DI BENVENUTO COMPLETO
-# NB: NIENTE <br> -> usa solo \n
 # -------------------------------
 WELCOME_TEXT = """
-<b>BENVENUTO NEL NOSTRO CANALE PUBBLICO 🏆</b>
+<b>⚽️BENVENUTO NEL CANALE PUBBLICO del CECCHINO ⚽️🏆🔫</b>
 
-Qui troverai solo ed esclusivamente giocate studiate per pungere i bookmakers 🔫
+Qui troverai tutte le promo più vantaggiose e consigli su come sfruttarle 👌
 
-<b>In questo canale troverai :</b>
+Non aspettarti multiploni quota 100 che si vincono 1 volta ogni 2 anni, qui giochiamo in maniera chirurgica per andare in profit ogni santo giorno!
 
-- <b>QUOTE MAGGIORATE OGNI GIORNO</b> 🔝
+🏆 Inoltre, per te che sei appena entrato nel mio canale pubblico,
+posso farti prendere un BONUS SENZA DEPOSITO 💸 selezionando solo il bonus
+all’iscrizione tramite questi due link 👇
 
-- <b>BONUS SNIPER WEEK</b> (che ci permette di giocare le multiple gratis ogni week end del mese per tutto l’anno) 💰
+📌 <b><a href="https://bonus.sportbet.it/ilcecchino/">50,00€ GRATIS SPORTBET</a></b>
 
-- <b>ANALISI SU MARCATORI E RISULTATI ESATTI</b> (ci sono 2/3 studi settimanali) 📈
+📌 <b><a href="https://sportium.it/offer/fun-convalida-50-cecchino/?father=spcecchino">50,00€ GRATIS SPORTIUM</a></b>
 
-- <b>RICEVERAI 50,00€ GRATIS</b> SOLO ALL’ISCRIZIONE E ALLA CONVALIDA DEI DOCUMENTI (selezionando il bonus all’iscrizione) 🎁
+Se vuoi invece accedere a tutte le nostre giocate prima che le quote scendono 📉,
+alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza
+che la SNIPER ROOM (canale privato) è ancora aperta! 👇
 
-Per avere tutto ciò, ti basta un iscrizione ad uno dei nostri book di riferimento, che ci permettono di avere questi bonus e noi li sfruttiamo a meglio.
-(Ricordati, è proprio con i bonus che abbiamo un vantaggio su tutto)
-
-<b>SPORTBET :</b> <a href="https://bonus.sportbet.it/ilcecchino/">https://bonus.sportbet.it/ilcecchino/</a>
-
-<b>SPORTIUM :</b> <a href="https://sportium.it/fwlink/account-registration?father=spcecchino">https://sportium.it/fwlink/account-registration?father=spcecchino</a>
-
-<b>Ora è arrivato il momento di fare sul serio, io ti do la mira, ma il grilletto lo devi premere tu! Benvenuto 👌</b>
-
-Se invece vuoi accedere <b>A TUTTE LE ANALISI ESCLUSIVE</b> contatta l’assistenza che ti spiega come accedere al canale privato 👇
-
-👉 <b><a href="https://t.me/m/36n3dfU3MmNk">ASSISTENZA</a></b> 👈
+⚠️ <b><a href="https://t.me/m/36n3dfU3MmNk">ASSISTENZA</a></b>
 """
 
 # -------------------------------
