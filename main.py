@@ -2,39 +2,23 @@
 import os
 import telebot
 from telebot.types import ChatJoinRequest
-from telebot.apihelper import ApiTelegramException
 
-# ========= TOKEN =========
 TOKEN = os.getenv("BOT_TOKEN") or os.getenv("BOT")
 if not TOKEN:
-    raise RuntimeError("BOT_TOKEN/BOT non impostato! (Railway > Variables)")
+    raise RuntimeError("BOT_TOKEN/BOT non impostato!")
 
-bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
+bot = telebot.TeleBot(TOKEN)
 
-# (consigliato) pulizia webhook residuo
-try:
-    bot.remove_webhook()
-except Exception:
-    pass
+@bot.message_handler(commands=["start"])
+def start(message):
+    bot.send_message(message.chat.id, "✅ ONLINE")
 
-# ========= CONFIG =========
-# Incolla qui il file_id della foto (se vuoto, manda solo testo)
-PHOTO_FILE_ID = ""
+@bot.chat_join_request_handler()
+def handle_join_request(join_request: ChatJoinRequest):
+    bot.approve_chat_join_request(join_request.chat.id, join_request.from_user.id)
 
-# Messaggio (link assistenza nuovo)
-WELCOME_TEXT = (
-    "<b>⚽️BENVENUTO NEL CANALE PUBBLICO del CECCHINO ⚽️🏆🔫</b>\n\n"
-    "Qui troverai tutte le promo più vantaggiose e consigli su come sfruttarle 👌\n\n"
-    "Non aspettarti multiploni quota 100 che si vincono 1 volta ogni 2 anni, qui giochiamo in maniera chirurgica per andare in profit ogni santo giorno!\n\n"
-    "🏆 Inoltre, per te che sei appena entrato nel mio canale pubblico,\n"
-    "posso farti prendere un BONUS SENZA DEPOSITO 💸 selezionando solo il bonus\n"
-    "all’iscrizione tramite questi due link 👇\n\n"
-    "📌 <b><a href=\"https://bonus.sportbet.it/ilcecchino/\">50,00€ GRATIS SPORTBET</a></b>\n\n"
-    "📌 <b><a href=\"https://sportium.it/offer/fun-convalida-50-cecchino/?father=spcecchino\">50,00€ GRATIS SPORTIUM</a></b>\n\n"
-    "Se vuoi invece accedere a tutte le nostre giocate prima che le quote scendono,\n"
-    "alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza\n"
-    "che la SNIPER ROOM (canale privato) è ancora aperta! 👇\n\n"
-    "⚠️ <b><a href=\"https://t.me/m/7IaxhPVCYjlk\">ASSISTENZA</a></b>\n"
+print("ONLINE")
+bot.infinity_polling(skip_pending=True)    "⚠️ <b><a href=\"https://t.me/m/7IaxhPVCYjlk\">ASSISTENZA</a></b>\n"
 )
 
 # ========= /start =========
