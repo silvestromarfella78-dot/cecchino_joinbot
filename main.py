@@ -10,13 +10,16 @@ if not TOKEN:
 
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 
+# evita webhook residui
 try:
     bot.remove_webhook()
 except Exception:
     pass
 
-PHOTO_FILE_ID = ""  # incolla qui il file_id quando lo ottieni
+# ✅ QUI METTI IL FILE_ID DELLA FOTO (se vuoto, manda solo testo)
+PHOTO_FILE_ID = ""  # esempio: "AgACAgQAAxkBAA..."
 
+# ✅ MESSAGGIO (link nuovo assistenza)
 WELCOME_TEXT = (
     "<b>⚽️BENVENUTO NEL CANALE PUBBLICO del CECCHINO ⚽️🏆🔫</b>\n\n"
     "Qui troverai tutte le promo più vantaggiose e consigli su come sfruttarle 👌\n\n"
@@ -32,9 +35,74 @@ WELCOME_TEXT = (
     "⚠️ <b><a href=\"https://t.me/m/7IaxhPVCYjlk\">ASSISTENZA</a></b>\n"
 )
 
+# -------------------------------
+# /start (test + guida file_id)
+# -------------------------------
 @bot.message_handler(commands=["start"])
 def start(message):
     bot.send_message(
+        message.chat.id,
+        "✅ Bot attivo.\n\n"
+        "📸 Per ottenere il FILE_ID della foto:\n"
+        "1) inviami una foto qui in privato\n"
+        "2) ti rispondo con il FILE_ID\n\n"
+        "Poi incollalo in PHOTO_FILE_ID e redeploy."
+    )
+
+# -------------------------------
+# Estrai file_id foto
+# -------------------------------
+@bot.message_handler(content_types=["photo"])
+def get_photo_id(message):
+    try:
+        file_id = message.photo[-1].file_id
+        bot.reply_to(message, f"FILE_ID:\n<code>{file_id}</code>")
+        print("📸 FILE_ID:", file_id)
+    except Exception as e:
+        print("❌ get_photo_id error:", repr(e))
+
+# -------------------------------
+# Join request: approva + invia
+# -------------------------------
+@bot.chat_join_request_handler()
+def handle_join_request(join_request: ChatJoinRequest):
+    chat_id = join_request.chat.id
+    user_id = join_request.from_user.id
+    user_chat_id = getattr(join_request, "user_chat_id", None)
+
+    print(f"📩 JOIN REQUEST: chat_id={chat_id} user_id={user_id} user_chat_id={user_chat_id}")
+
+    # 1) Approva
+    try:
+        bot.approve_chat_join_request(chat_id, user_id)
+        print(f"✅ APPROVATA: user={user_id}")
+    except ApiTelegramException as e:
+        print(f"❌ APPROVAZIONE: {e.error_code} - {e.description}")
+        return
+    except Exception as e:
+        print("❌ APPROVAZIONE error:", repr(e))
+        return
+
+    # 2) Invia DM (prima user_chat_id se c’è, poi fallback su user_id)
+    targets = []
+    if user_chat_id:
+        targets.append(user_chat_id)
+    targets.append(user_id)
+
+    for target in targets:
+        try:
+            if PHOTO_FILE_ID:
+                bot.send_photo(target, PHOTO_FILE_ID)
+            bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
+            print(f"✅ DM INVIATO A {target}")
+            break
+        except ApiTelegramException as e:
+            print(f"❌ DM FAIL a {target}: {e.error_code} - {e.description}")
+        except Exception as e:
+            print(f"❌ DM FAIL a {target}: {repr(e)}")
+
+print("Bot ONLINE…")
+bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)    bot.send_message(
         message.chat.id,
         "✅ Bot attivo.\n\n"
         "📸 Per ottenere il FILE_ID:\n"
