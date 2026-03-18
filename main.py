@@ -18,7 +18,7 @@ except Exception:
     pass
 
 # --- FOTO: incolla qui il file_id quando lo ottieni ---
-PHOTO_FILE_ID = ""  # es: "AgACAgQAAxkBAA..."
+PHOTO_FILE_ID = "AgACAgQAAxkBAAMDabqhCnYOi6UvF_8DMHcLPCbWFLcAAncNaxvveKFRSHbuAnPXCQ8BAAMCAAN5AAM6BA"  # es: "AgACAgQAAxkBAA..."
 
 # --- TESTI ---
 START_TEXT = (
