@@ -271,8 +271,7 @@ def handle_join_request(join_request: ChatJoinRequest):
             print(f"❌ DM FALLITO A {target}: {repr(e)}")
 
 print("Bot del Cecchino ONLINE…")
-bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)Se vuoi invece accedere a tutte le nostre giocate prima che le quote scendono 📉,
-alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza
+bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza
 che la SNIPER ROOM (canale privato) è ancora aperta! 👇
 
 ⚠️ <b><a href="https://t.me/m/7IaxhPVCYjlk">ASSISTENZA</a></b>
