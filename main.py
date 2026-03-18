@@ -2,26 +2,41 @@
 import os
 import telebot
 from telebot.types import ChatJoinRequest
+from telebot.apihelper import ApiTelegramException
 
+# Railway: token in BOT (o BOT_TOKEN)
 TOKEN = os.getenv("BOT_TOKEN") or os.getenv("BOT")
 if not TOKEN:
-    raise RuntimeError("BOT_TOKEN/BOT non impostato!")
+    raise RuntimeError("BOT_TOKEN/BOT non impostato! (Railway > Variables)")
 
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 
-@bot.message_handler(commands=["start"])
-def start(message):
-    bot.send_message(message.chat.id, "✅ ONLINE")
+# (consigliato) pulizia webhook residuo
+try:
+    bot.remove_webhook()
+except Exception:
+    pass
 
-@bot.chat_join_request_handler()
-def handle_join_request(join_request: ChatJoinRequest):
-    bot.approve_chat_join_request(join_request.chat.id, join_request.from_user.id)
+# ✅ Foto: incolla qui il FILE_ID se vuoi inviare l’immagine (altrimenti lascia vuoto)
+PHOTO_FILE_ID = ""  # es: "AgACAgQAAxkBAAIPzGlw2dJ7K7wSmgXReUSoSGFHHQtBAA..."
 
-print("ONLINE")
-bot.infinity_polling(skip_pending=True)    "⚠️ <b><a href=\"https://t.me/m/7IaxhPVCYjlk\">ASSISTENZA</a></b>\n"
-)
+# ✅ Messaggio completo (stile come screenshot) + link nuovo assistenza
+WELCOME_TEXT = """
+<b>BENVENUTO NEL CANALE PUBBLICO del</b>
+<b>CECCHINO ⚽️🏆🔫</b>
 
-# ========= /start =========
+<b>Guarda qui che cosa abbiamo COMBINATO</b>
+<b><u><i>SE VUOI DISTRUGGERLI PURE TE CLICCA QUI SOTTO👌</i></u></b>
+
+<b>contatta la mia assistenza</b>
+<b>che la SNIPER ROOM (canale privato) è ancora aperta! 👇</b>
+
+⚠️ <b><a href="https://t.me/m/7IaxhPVCYjlk">ASSISTENZA</a></b>
+"""
+
+# -------------------------------
+# /start (test + guida file_id)
+# -------------------------------
 @bot.message_handler(commands=["start"])
 def start(message):
     bot.send_message(
@@ -33,8 +48,60 @@ def start(message):
         "Poi incollalo in PHOTO_FILE_ID e redeploy."
     )
 
-# ========= ESTRAI FILE_ID FOTO =========
+# -------------------------------
+# Estrai FILE_ID dalla foto inviata al bot in privato
+# -------------------------------
 @bot.message_handler(content_types=["photo"])
+def get_photo_id(message):
+    try:
+        file_id = message.photo[-1].file_id
+        bot.reply_to(message, f"FILE_ID:\n<code>{file_id}</code>")
+        print("📸 FILE_ID:", file_id)
+    except Exception as e:
+        print("❌ get_photo_id error:", repr(e))
+
+# --------------------------------------------------------
+# Join request: approva automaticamente + invia foto (se c’è) + messaggio
+# --------------------------------------------------------
+@bot.chat_join_request_handler()
+def handle_join_request(join_request: ChatJoinRequest):
+    chat_id = join_request.chat.id
+    user_id = join_request.from_user.id
+    user_chat_id = getattr(join_request, "user_chat_id", None)
+
+    print(f"📩 JOIN REQUEST: chat_id={chat_id} user_id={user_id} user_chat_id={user_chat_id}")
+
+    # 1) Approva richiesta
+    try:
+        bot.approve_chat_join_request(chat_id, user_id)
+        print(f"✅ APPROVATA: user={user_id}")
+    except ApiTelegramException as e:
+        print(f"❌ APPROVAZIONE: {e.error_code} - {e.description}")
+        return
+    except Exception as e:
+        print("❌ APPROVAZIONE error:", repr(e))
+        return
+
+    # 2) Invia DM (prima user_chat_id, poi fallback su user_id)
+    targets = []
+    if user_chat_id:
+        targets.append(user_chat_id)
+    targets.append(user_id)
+
+    for target in targets:
+        try:
+            if PHOTO_FILE_ID:
+                bot.send_photo(target, PHOTO_FILE_ID)
+            bot.send_message(target, WELCOME_TEXT, disable_web_page_preview=True)
+            print(f"✅ DM INVIATO A {target}")
+            break
+        except ApiTelegramException as e:
+            print(f"❌ DM FAIL a {target}: {e.error_code} - {e.description}")
+        except Exception as e:
+            print(f"❌ DM FAIL a {target}: {repr(e)}")
+
+print("Bot ONLINE…")
+bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)@bot.message_handler(content_types=["photo"])
 def get_photo_id(message):
     try:
         file_id = message.photo[-1].file_id
