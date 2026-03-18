@@ -272,8 +272,7 @@ def handle_join_request(join_request: ChatJoinRequest):
 
 print("Bot del Cecchino ONLINE…")
 bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)alle nostre analisi, scalate periodiche, dati e statistiche, contatta la mia assistenza
-che la SNIPER ROOM (canale privato) è ancora aperta! 👇
-
+bot.infinity_polling(skip_pending=True, timeout=60, long_polling_timeout=60)
 ⚠️ <b><a href="https://t.me/m/7IaxhPVCYjlk">ASSISTENZA</a></b>
 """
 
